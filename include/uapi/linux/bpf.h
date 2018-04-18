@@ -93,7 +93,6 @@ enum bpf_cmd {
 	BPF_PROG_GET_FD_BY_ID,
 	BPF_MAP_GET_FD_BY_ID,
 	BPF_OBJ_GET_INFO_BY_FD,
-	BPF_PROG_QUERY,
 	BPF_BTF_LOAD = 18,
 };
 
@@ -214,11 +213,6 @@ enum bpf_attach_type {
 /* Specify numa node during map creation */
 #define BPF_F_NUMA_NODE		(1U << 2)
 
-/* flags for BPF_PROG_QUERY */
-#define BPF_F_QUERY_EFFECTIVE	(1U << 0)
-
-#define BPF_OBJ_NAME_LEN 16U
-
 /* Flags for accessing BPF object */
 #define BPF_F_RDONLY		(1U << 3)
 #define BPF_F_WRONLY		(1U << 4)
@@ -236,7 +230,6 @@ union bpf_attr {
 		__u32	numa_node;	/* numa node (effective only if
 					 * BPF_F_NUMA_NODE is set).
 					 */
-		char	map_name[BPF_OBJ_NAME_LEN];
 	};
 
 	struct { /* anonymous struct used by BPF_MAP_*_ELEM commands */
@@ -259,13 +252,6 @@ union bpf_attr {
 		__aligned_u64	log_buf;	/* user supplied buffer */
 		__u32		kern_version;	/* checked when prog_type=kprobe */
 		__u32		prog_flags;
-		char		prog_name[BPF_OBJ_NAME_LEN];
-		__u32		prog_ifindex;	/* ifindex of netdev to prep for */
-		/* For some prog types expected attach type must be known at
-		 * load time to verify attach type specific parts of prog
-		 * (context accesses, allowed helpers, etc).
-		 */
-		__u32		expected_attach_type;
 	};
 
 	struct { /* anonymous struct used by BPF_OBJ_* commands */
@@ -307,15 +293,6 @@ union bpf_attr {
 		__u32		info_len;
 		__aligned_u64	info;
 	} info;
-
-	struct { /* anonymous struct used by BPF_PROG_QUERY command */
-		__u32		target_fd;	/* container object to query */
-		__u32		attach_type;
-		__u32		query_flags;
-		__u32		attach_flags;
-		__aligned_u64	prog_ids;
-		__u32		prog_cnt;
-	} query;
 
 	struct { /* anonymous struct for BPF_BTF_LOAD */
 		__aligned_u64	btf;
@@ -977,11 +954,6 @@ struct bpf_prog_info {
 	__u32 xlated_prog_len;
 	__aligned_u64 jited_prog_insns;
 	__aligned_u64 xlated_prog_insns;
-	__u64 load_time;	/* ns since boottime */
-	__u32 created_by_uid;
-	__u32 nr_map_ids;
-	__aligned_u64 map_ids;
-	char name[BPF_OBJ_NAME_LEN];
 } __attribute__((aligned(8)));
 
 struct bpf_map_info {
@@ -991,7 +963,6 @@ struct bpf_map_info {
 	__u32 value_size;
 	__u32 max_entries;
 	__u32 map_flags;
-	char  name[BPF_OBJ_NAME_LEN];
 } __attribute__((aligned(8)));
 
 /* User bpf_sock_ops struct to access socket values and specify request ops
