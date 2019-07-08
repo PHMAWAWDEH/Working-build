@@ -179,6 +179,9 @@ static void devfreq_max_unboost(struct work_struct *work)
 	kpp_request(STUNE_TOPAPP, &kpp_ta, 0);
 	kpp_request(STUNE_FOREGROUND, &kpp_fg, 0);
 
+	kpp_request(STUNE_TOPAPP, &kpp_ta, 0);
+	kpp_request(STUNE_FOREGROUND, &kpp_fg, 0);
+
 	clear_bit(MAX_BOOST, &b->state);
 	wake_up(&b->boost_waitq);
 }
