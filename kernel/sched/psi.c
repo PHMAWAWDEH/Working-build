@@ -187,8 +187,7 @@ static void group_init(struct psi_group *group)
 
 	for_each_possible_cpu(cpu)
 		seqcount_init(&per_cpu_ptr(group->pcpu, cpu)->seq);
-	group->avg_last_update = sched_clock();
-	group->avg_next_update = group->avg_last_update + psi_period;
+	group->avg_next_update = sched_clock() + psi_period;
 	INIT_DELAYED_WORK(&group->avgs_work, psi_avgs_work);
 	mutex_init(&group->avgs_lock);
 	/* Init trigger-related members */
@@ -487,7 +486,7 @@ static u64 window_update(struct psi_window *win, u64 now, u64 value)
 		u32 remaining;
 
 		remaining = win->size - elapsed;
-		growth += div64_u64(win->prev_growth * remaining, win->size);
+		growth += div_u64(win->prev_growth * remaining, win->size);
 	}
 
 	return growth;
@@ -1097,11 +1096,10 @@ void psi_trigger_destroy(struct psi_trigger *t)
 
 	group = t->group;
 	/*
-	 * Wakeup waiters to stop polling and clear the queue to prevent it from
-	 * being accessed later. Can happen if cgroup is deleted from under a
-	 * polling process.
+	 * Wakeup waiters to stop polling. Can happen if cgroup is deleted
+	 * from under a polling process.
 	 */
-	wake_up_pollfree(&t->event_wait);
+	wake_up_interruptible(&t->event_wait);
 
 	mutex_lock(&group->trigger_lock);
 
@@ -1186,9 +1184,6 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
 
 	if (static_branch_likely(&psi_disabled))
 		return -EOPNOTSUPP;
-
-	if (!nbytes)
-		return -EINVAL;
 
 	buf_size = min(nbytes, sizeof(buf));
 	if (copy_from_user(buf, user_buf, buf_size))
