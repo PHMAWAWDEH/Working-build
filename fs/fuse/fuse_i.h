@@ -124,8 +124,6 @@ enum {
 	FUSE_I_INIT_RDPLUS,
 	/** An operation changing file size is in progress  */
 	FUSE_I_SIZE_UNSTABLE,
-	/* Bad inode */
-	FUSE_I_BAD,
 	/** Can be filled in by open, to use direct I/O on this file. */
 	FUSE_I_ATTR_FORCE_SYNC,
 };
@@ -134,13 +132,10 @@ struct fuse_conn;
 
 /**
  * Reference to lower filesystem file for read/write operations handled in
- * passthrough mode.
- * This struct also tracks the credentials to be used for handling read/write
- * operations.
+ * passthrough mode
  */
 struct fuse_passthrough {
 	struct file *filp;
-	struct cred *cred;
 };
 
 /** FUSE specific file data */
@@ -334,8 +329,6 @@ struct fuse_req {
 
 	/** refcount */
 	refcount_t count;
-
-	bool user_pages;
 
 	/** Unique ID for the interrupt request */
 	u64 intr_unique;
@@ -726,16 +719,6 @@ static inline u64 get_node_id(struct inode *inode)
 	return get_fuse_inode(inode)->nodeid;
 }
 
-static inline void fuse_make_bad(struct inode *inode)
-{
-	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
-}
-
-static inline bool fuse_is_bad(struct inode *inode)
-{
-	return unlikely(test_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state));
-}
-
 /** Device operations */
 extern const struct file_operations fuse_dev_operations;
 
@@ -945,8 +928,6 @@ void fuse_ctl_remove_conn(struct fuse_conn *fc);
  */
 int fuse_valid_type(int m);
 
-bool fuse_invalid_attr(struct fuse_attr *attr);
-
 /**
  * Is current process allowed to perform filesystem operation?
  */
@@ -1032,15 +1013,6 @@ struct posix_acl;
 struct posix_acl *fuse_get_acl(struct inode *inode, int type);
 int fuse_set_acl(struct inode *inode, struct posix_acl *acl, int type);
 
-/* passthrough.c */
-int fuse_passthrough_open(struct fuse_dev *fud, u32 lower_fd);
-int fuse_passthrough_setup(struct fuse_conn *fc, struct fuse_file *ff,
-			   struct fuse_open_out *openarg);
-void fuse_passthrough_release(struct fuse_passthrough *passthrough);
-ssize_t fuse_passthrough_read_iter(struct kiocb *iocb, struct iov_iter *to);
-ssize_t fuse_passthrough_write_iter(struct kiocb *iocb, struct iov_iter *from);
-ssize_t fuse_passthrough_mmap(struct file *file, struct vm_area_struct *vma);
-
 #ifdef CONFIG_FREEZER
 static inline void fuse_freezer_do_not_count(void)
 {
@@ -1084,5 +1056,12 @@ static inline void fuse_freezer_count(void) {}
 										\
 	__ret;									\
 })
+
+/* passthrough.c */
+int fuse_passthrough_open(struct fuse_dev *fud,
+			  struct fuse_passthrough_out *pto);
+int fuse_passthrough_setup(struct fuse_conn *fc, struct fuse_file *ff,
+			   struct fuse_open_out *openarg);
+void fuse_passthrough_release(struct fuse_passthrough *passthrough);
 
 #endif /* _FS_FUSE_I_H */
