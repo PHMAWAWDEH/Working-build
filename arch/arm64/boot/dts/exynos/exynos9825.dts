@@ -10173,7 +10173,7 @@
 		samsung,tmu_noise_cancel_mode = <0x4>;
 		samsung,tmu_efuse_value = <0x37>;
 		samsung,tmu_first_point_trim = <0x19>;
-		samsung,tmu_second_point_trim = <0x55>;
+		samsung,tmu_second_point_trim = <0x5f>; // 0x55
 		samsung,tmu_default_temp_offset = <0x32>;
 		samsung,tmu_default_trip_temp = <0x73>;
 		samsung,tmu_cal_type = <0x0>;
@@ -10196,7 +10196,7 @@
 		samsung,tmu_noise_cancel_mode = <0x4>;
 		samsung,tmu_efuse_value = <0x37>;
 		samsung,tmu_first_point_trim = <0x19>;
-		samsung,tmu_second_point_trim = <0x55>;
+		samsung,tmu_second_point_trim = <0x5f>; // 0x55
 		samsung,tmu_default_temp_offset = <0x32>;
 		samsung,tmu_default_trip_temp = <0x73>;
 		samsung,tmu_cal_type = <0x0>;
@@ -10219,7 +10219,7 @@
 		samsung,tmu_noise_cancel_mode = <0x4>;
 		samsung,tmu_efuse_value = <0x37>;
 		samsung,tmu_first_point_trim = <0x19>;
-		samsung,tmu_second_point_trim = <0x55>;
+		samsung,tmu_second_point_trim = <0x5f>; // 0x55
 		samsung,tmu_default_temp_offset = <0x32>;
 		samsung,tmu_default_trip_temp = <0x73>;
 		samsung,tmu_cal_type = <0x0>;
@@ -10242,7 +10242,7 @@
 		samsung,tmu_noise_cancel_mode = <0x4>;
 		samsung,tmu_efuse_value = <0x37>;
 		samsung,tmu_first_point_trim = <0x19>;
-		samsung,tmu_second_point_trim = <0x55>;
+		samsung,tmu_second_point_trim = <0x5f>; // 0x55
 		samsung,tmu_default_temp_offset = <0x32>;
 		samsung,tmu_default_trip_temp = <0x73>;
 		samsung,tmu_cal_type = <0x0>;
@@ -10265,7 +10265,7 @@
 		samsung,tmu_noise_cancel_mode = <0x4>;
 		samsung,tmu_efuse_value = <0x37>;
 		samsung,tmu_first_point_trim = <0x19>;
-		samsung,tmu_second_point_trim = <0x55>;
+		samsung,tmu_second_point_trim = <0x5f>; // 0x55
 		samsung,tmu_default_temp_offset = <0x32>;
 		samsung,tmu_default_trip_temp = <0x73>;
 		samsung,tmu_cal_type = <0x0>;
