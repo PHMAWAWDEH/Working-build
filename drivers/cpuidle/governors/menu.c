@@ -455,7 +455,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		}
 	}
 
-	data->last_state_idx = idx;
+	dev->last_state_idx = idx;
 
 	/* Re-evaluating the tick_stop for preserving the power and performance */
 	if (idx == 0 && data->predicted_us > TICK_USEC && *stop_tick == true) {
@@ -464,7 +464,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 		*stop_tick = false;
 	}
 
-	return data->last_state_idx;
+	return dev->last_state_idx;
 }
 
 /**
