@@ -48,26 +48,3 @@ jobs:
           name: "LPoS-${{ env.LPOS_KERNEL_VERSION }}-${{ matrix.device }}-${{ matrix.su }}-universal"
           path: |
             build/*.zip
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Create release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ github.event.inputs.tag }}
-          name: "LPoS-x-Eternity-${{ github.event.inputs.tag }}"
-          draft: false
-          prerelease: false
-          token: ${{ secrets.TOKEN }}          
-          artifacts: "artifacts/**/*.zip"
-          body: "Commit SHA: ${{ github.sha }}"
