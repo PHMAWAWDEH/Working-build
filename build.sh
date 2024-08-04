@@ -39,18 +39,15 @@ fi
 
 # Device configuration
 declare -A DEVICES=(
-    [beyond2lte]="exynos9820-beyond2lte_defconfig 9820 SRPRI17C014KU"
-    [beyond1lte]="exynos9820-beyond1lte_defconfig 9820 SRPRI28B014KU"
-    [beyond0lte]="exynos9820-beyond0lte_defconfig 9820 SRPRI28A014KU"
-    [beyondx]="exynos9820-beyondx_defconfig 9820 SRPSC04B011KU"
+    [d2s]="exynos9820-d2s_defconfig 9820 SRPRI17C014KU"
 )
 
 # Set device-specific variables
 if [[ -v DEVICES[$MODEL] ]]; then
     read KERNEL_DEFCONFIG SOC BOARD <<< "${DEVICES[$MODEL]}"
 else
-    echo "Unknown device: $MODEL, setting to beyond2lte"
-    read KERNEL_DEFCONFIG SOC BOARD <<< "${DEVICES[beyond2lte]}"
+    echo "Unknown device: $MODEL, setting to d2s"
+    read KERNEL_DEFCONFIG SOC BOARD <<< "${DEVICES[d2s]}"
 fi
 
 #dev
