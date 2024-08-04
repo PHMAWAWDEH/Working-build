@@ -39,7 +39,7 @@ fi
 
 # Device configuration
 declare -A DEVICES=(
-    [d2s]="exynos9820-d2s_defconfig 9820 SRPRI17C014KU"
+    [d2s]="exynos9820-d2s_defconfig 9825 SRPSC14B007KU"
 )
 
 # Set device-specific variables
