@@ -32,10 +32,10 @@ for MODEL in "${MODELS[@]}"; do
     echo "Configuring for ${MODEL}..."
     make ${ARGS} "exynos9820-${MODEL}_defconfig"
     make ${ARGS} dtbs
-    build_dtbo "$MODEL" ""  #INTL
+    build_dtbo "d2s" ""  #INTL
 done
 
-cd "${RDIR}/build" && zip -r "DTBO n10.zip" dtbo_*.img
+cd "${RDIR}/build" && zip -r "DTBO s10.zip" dtbo_*.img
 echo "All DTBO images have been built and zipped."
 
 cd "${RDIR}"
