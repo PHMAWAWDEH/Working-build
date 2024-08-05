@@ -30,7 +30,7 @@ build_dtbo() {
 #build DTBO for all models
 for MODEL in "${MODELS[@]}"; do
     echo "Configuring for ${MODEL}..."
-    make ${ARGS} "exynos9825-${MODEL}_defconfig"
+    make ${ARGS} "exynos9820-${MODEL}_defconfig"
     make ${ARGS} dtbs
     build_dtbo "$MODEL" ""  #INTL
 done
