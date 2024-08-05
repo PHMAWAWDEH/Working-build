@@ -30,9 +30,9 @@ build_dtbo() {
 #build DTBO for all models
 for MODEL in "${MODELS[@]}"; do
     echo "Configuring for ${MODEL}..."
-    make ${ARGS} "exynos9820-d2s_defconfig"
+    make ${ARGS} "exynos9820-${MODEL}_defconfig"
     make ${ARGS} dtbs
-    build_dtbo "d2s" ""  #INTL
+    build_dtbo "$MODEL" ""  #INTL
 done
 
 cd "${RDIR}/build" && zip -r "DTBO n10.zip" dtbo_*.img
