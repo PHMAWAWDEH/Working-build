@@ -75,8 +75,8 @@ build_kernel() {
 build_dtbo()
 {
     # Build for international variant
-    "${RDIR}/toolchains/mkdtimg" cfg_create "build/dtbo_${MODEL}.img" \
-        "${RDIR}/toolchains/configs/${MODEL}.cfg" \
+    "${RDIR}/toolchains/mkdtimg" cfg_create "build/dtbo_${d2s}.img" \
+        "${RDIR}/toolchains/configs/${d2s}.cfg" \
         -d "${RDIR}/arch/arm64/boot/dts/samsung"
 }
 
@@ -109,6 +109,11 @@ build_zip() {
     #INTL DTBO
     cp "${RDIR}/build/dtbo_${MODEL}.img" "${RDIR}/build/zip/dtbo.img"
 
+    #KOR DTBO if exsits..
+    if [ -f "${RDIR}/build/dtbo_${MODEL}ks.img" ]; then
+        cp "${RDIR}/build/dtbo_${MODEL}ks.img" "${RDIR}/build/zip/dtbo_ks.img"
+    fi
+    
     cp -r "${RDIR}/toolchains/twrp_zip/"* "${RDIR}/build/zip/"
     cd $RDIR/build/zip
     zip -r ../LPoS-x-Eternity-${LPOS_KERNEL_VERSION}-${MODEL}-${KSU}-universal.zip .
