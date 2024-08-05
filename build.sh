@@ -75,8 +75,8 @@ build_kernel() {
 build_dtbo()
 {
     # Build for international variant
-    "${RDIR}/toolchains/mkdtimg" cfg_create "build/dtbo_${d2s}.img" \
-        "${RDIR}/toolchains/configs/${d2s}.cfg" \
+    "${RDIR}/toolchains/mkdtimg" cfg_create "build/dtbo_${MODEL}.img" \
+        "${RDIR}/toolchains/configs/${MODEL}.cfg" \
         -d "${RDIR}/arch/arm64/boot/dts/samsung"
 }
 
