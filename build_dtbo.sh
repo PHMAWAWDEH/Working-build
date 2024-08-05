@@ -35,7 +35,7 @@ for MODEL in "${MODELS[@]}"; do
     build_dtbo "d2s" ""  #INTL
 done
 
-cd "${RDIR}/build" && zip -r "DTBO S10.zip" dtbo_*.img
+cd "${RDIR}/build" && zip -r "DTBO n10.zip" dtbo_*.img
 echo "All DTBO images have been built and zipped."
 
 cd "${RDIR}"
