@@ -16,7 +16,7 @@ export READELF=$PWD/proton/bin/aarch64-linux-gnu-readelf
 export LLVM=1
 export ARGS="CC=clang LD=ld.lld ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- CLANG_TRIPLE=aarch64-linux-gnu- AR=llvm-ar NM=llvm-nm AS=llvm-as OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump OBJSIZE=llvm-size STRIP=llvm-strip LLVM_AR=llvm-ar LLVM_DIS=llvm-dis LLVM_NM=llvm-nm LLVM=1"
 
-MODELS=("d1")
+MODELS=("d2s")
 
 build_dtbo() {
     local MODEL=$1
