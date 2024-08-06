@@ -240,6 +240,6 @@ config MALI_EXYNOS_UNIT_TESTS
 config MALI_EXYNOS_DEBUG_FAULT_DUMP
     bool "dump mali trace data on gpu fault"
     depends on MALI_MIDGARD
-    default n
+    default y
     help
       MALI_MIDGARD_ENABLE_TRACE must be enabled for more detailed logs
