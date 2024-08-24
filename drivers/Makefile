@@ -232,6 +232,9 @@ obj-y                           += motor/
 # uH
 obj-$(CONFIG_UH)		+= uh/
 
+# Vibrator
+obj-y				+= vibrator/
+
 # streamline
 #ifeq ($(CONFIG_GATOR), y)
 #	obj-$(CONFIG_GATOR)				+= gator/
