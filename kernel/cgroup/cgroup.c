@@ -3676,8 +3676,7 @@ static ssize_t cgroup_file_write(struct kernfs_open_file *of, char *buf,
 	return ret ?: nbytes;
 }
 
-static unsigned int cgroup_file_poll(struct kernfs_open_file *of,
-				     poll_table *pt)
+static unsigned int cgroup_file_poll(struct kernfs_open_file *of, poll_table *pt)
 {
 	struct cftype *cft = of->kn->priv;
 
