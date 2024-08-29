@@ -12,7 +12,6 @@
 #include <linux/moduleparam.h>
 #include <linux/slab.h>
 #include <uapi/linux/sched/types.h>
-<<<<<<< HEAD
 #include <linux/moduleparam.h>
 #include <linux/compiler.h>
 #include <linux/ems_service.h>
