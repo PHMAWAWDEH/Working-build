@@ -2954,7 +2954,6 @@ int fimc_is_sec_sensor_find_rear_tof_uid(struct fimc_is_core *core, char *buf)
 	struct fimc_is_vender_specific *specific = core->vender.private_data;
 	struct fimc_is_rom_info *finfo = NULL;
 
-	int i = 0;
 	fimc_is_sec_get_sysfs_finfo(&finfo, REAR_TOF_ROM_ID);
 
 	if (finfo->cal_map_ver[3] >= REAR_TOF_CHECK_MAP_VERSION) {
@@ -2983,7 +2982,6 @@ int fimc_is_sec_sensor_find_front_tof_uid(struct fimc_is_core *core, char *buf)
 	int i;
 	struct fimc_is_vender_specific *specific = core->vender.private_data;
 	struct fimc_is_rom_info *finfo = NULL;
-	int i = 0;
 
 	fimc_is_sec_get_sysfs_finfo(&finfo, FRONT_TOF_ROM_ID);
 
