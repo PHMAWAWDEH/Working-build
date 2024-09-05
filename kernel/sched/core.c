@@ -756,6 +756,7 @@ static void set_load_weight(struct task_struct *p)
 		return;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * SCHED_OTHER tasks have to update their load when changing their
 	 * weight
@@ -1503,6 +1504,10 @@ static inline void init_uclamp(void) { }
 bool sched_task_on_rq(struct task_struct *p)
 {
 	return task_on_rq_queued(p);
+=======
+	load->weight = scale_load(sched_prio_to_weight[prio]);
+	load->inv_weight = sched_prio_to_wmult[prio];
+>>>>>>> parent of d0b905397703 (tick/nohz: Kick only _queued_ task whose tick dependency is updated)
 }
 
 static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
