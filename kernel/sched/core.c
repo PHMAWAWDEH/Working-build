@@ -756,7 +756,6 @@ static void set_load_weight(struct task_struct *p)
 		return;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * SCHED_OTHER tasks have to update their load when changing their
 	 * weight
