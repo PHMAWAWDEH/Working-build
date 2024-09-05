@@ -3520,19 +3520,18 @@ static struct rq *finish_task_switch(struct task_struct *prev)
 	prev_state = prev->state;
 	vtime_task_switch(prev);
 	perf_event_task_sched_in(prev, current);
-	finish_task(prev);
-	tick_nohz_task_switch();
-	finish_lock_switch(rq);
-	finish_arch_post_lock_switch();
-	kcov_finish_switch(current);
 	/*
-	 * kmap_local_sched_out() is invoked with rq::lock held and
-	 * interrupts disabled. There is no requirement for that, but the
-	 * sched out code does not have an interrupt enabled section.
-	 * Restoring the maps on sched in does not require interrupts being
-	 * disabled either.
+	 * The membarrier system call requires a full memory barrier
+	 * after storing to rq->curr, before going back to user-space.
+	 *
+	 * TODO: This smp_mb__after_unlock_lock can go away if PPC end
+	 * up adding a full barrier to switch_mm(), or we should figure
+	 * out if a smp_mb__after_unlock_lock is really the proper API
+	 * to use.
 	 */
-	kmap_local_sched_in();
+	smp_mb__after_unlock_lock();
+	finish_lock_switch(rq, prev);
+	finish_arch_post_lock_switch();
 
 	fire_sched_in_preempt_notifiers(current);
 	if (mm)
@@ -3550,6 +3549,7 @@ static struct rq *finish_task_switch(struct task_struct *prev)
 		finish_task_switch_dead(prev);
 	}
 
+	tick_nohz_task_switch();
 	return rq;
 }
 
