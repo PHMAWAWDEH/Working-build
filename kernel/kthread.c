@@ -54,47 +54,23 @@ enum KTHREAD_BITS {
 	KTHREAD_IS_PER_CPU = 0,
 	KTHREAD_SHOULD_STOP,
 	KTHREAD_SHOULD_PARK,
+	KTHREAD_IS_PARKED,
 };
 
-static inline struct kthread *to_kthread(struct task_struct *k)
+static inline void set_kthread_struct(void *kthread)
 {
-	WARN_ON(!(k->flags & PF_KTHREAD));
-	return (__force void *)k->set_child_tid;
-}
-
-/*
- * Variant of to_kthread() that doesn't assume @p is a kthread.
- *
- * Per construction; when:
- *
- *   (p->flags & PF_KTHREAD) && p->set_child_tid
- *
- * the task is both a kthread and struct kthread is persistent. However
- * PF_KTHREAD on it's own is not, kernel_thread() can exec() (See umh.c and
- * begin_new_exec()).
- */
-static inline struct kthread *__to_kthread(struct task_struct *p)
-{
-	void *kthread = (__force void *)p->set_child_tid;
-	if (kthread && !(p->flags & PF_KTHREAD))
-		kthread = NULL;
-	return kthread;
-}
-
-void set_kthread_struct(struct task_struct *p)
-{
-	struct kthread *kthread;
-
-	if (__to_kthread(p))
-		return;
-
-	kthread = kzalloc(sizeof(*kthread), GFP_KERNEL);
 	/*
 	 * We abuse ->set_child_tid to avoid the new member and because it
 	 * can't be wrongly copied by copy_process(). We also rely on fact
 	 * that the caller can't exec, so PF_KTHREAD can't be cleared.
 	 */
-	p->set_child_tid = (__force void __user *)kthread;
+	current->set_child_tid = (__force void __user *)kthread;
+}
+
+static inline struct kthread *to_kthread(struct task_struct *k)
+{
+	WARN_ON(!(k->flags & PF_KTHREAD));
+	return (__force void *)k->set_child_tid;
 }
 
 void free_kthread_struct(struct task_struct *k)
@@ -222,8 +198,8 @@ static int kthread(void *_create)
 	struct kthread *self;
 	int ret;
 
-	set_kthread_struct(current);
-	self = to_kthread(current);
+	self = kmalloc(sizeof(*self), GFP_KERNEL);
+	set_kthread_struct(self);
 
 	/* If user was SIGKILLed, I release the structure. */
 	done = xchg(&create->done, NULL);
